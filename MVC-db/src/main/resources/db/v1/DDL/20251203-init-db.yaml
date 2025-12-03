@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1764764878917-1
+      author: rezordos
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: fio
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: birth
+                  type: date
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primary key: true
+                    nullable: false
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: name
+                  type: varchar(100)
+              - column:
+                  name: author
+                  type: varchar(100)
+              - column:
+                  name: year
+                  type: integer
+              - column:
+                  name: person_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: book
+            baseColumnNames: person_id
+            referencedTableName: person
+            referencedColumnNames: id
+            constraintName: fk_book_person
