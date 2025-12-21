@@ -43,8 +43,6 @@ databaseChangeLog:
               - column:
                   name: person_id
                   type: UUID
-                  constraints:
-                    nullable: false
 
         - addForeignKeyConstraint:
             baseTableName: book
