@@ -1,6 +1,7 @@
 package com.technokratos.agona.service;
 
 import com.technokratos.agona.dto.PersonDto;
+import com.technokratos.agona.dto.PersonDtoWithBooks;
 import com.technokratos.agona.mapper.PersonMapper;
 import com.technokratos.agona.model.PersonEntity;
 import com.technokratos.agona.repository.PersonRepository;
@@ -23,6 +24,14 @@ public class PersonService {
         Optional<PersonEntity> person = personRepository.findById(id);
         if (person.isPresent()) {
             return personMapper.toDto(person.get());
+        }
+        return null;
+    }
+
+    public PersonDtoWithBooks getPersonWithBooksById(UUID id) {
+        Optional<PersonEntity> person = personRepository.findPersonWithBooks(id);
+        if (person.isPresent()) {
+            return personMapper.toDtoWithBooks(person.get());
         }
         return null;
     }

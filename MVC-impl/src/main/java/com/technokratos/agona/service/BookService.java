@@ -1,6 +1,7 @@
 package com.technokratos.agona.service;
 
 import com.technokratos.agona.dto.BookDto;
+import com.technokratos.agona.dto.BookDtoWithPeople;
 import com.technokratos.agona.mapper.BookMapper;
 import com.technokratos.agona.model.BookEntity;
 import com.technokratos.agona.repository.BookRepository;
@@ -23,6 +24,14 @@ public class BookService {
         Optional<BookEntity> entity = bookRepository.findById(id);
         if (entity.isPresent()) {
             return bookMapper.toDto(entity.get());
+        }
+        return null;
+    }
+
+    public BookDtoWithPeople getBookWithPeopleById(UUID id) {
+        Optional<BookEntity> entity = bookRepository.findById(id);
+        if (entity.isPresent()) {
+            return bookMapper.toDtoWithPeople(entity.get());
         }
         return null;
     }
@@ -52,6 +61,22 @@ public class BookService {
     public void deleteBook(UUID id) {
         Optional<BookEntity> entity = bookRepository.findById(id);
         entity.ifPresent(bookRepository::delete);
+    }
+
+    @Transactional
+    public void releaseBookFromPerson(UUID id) {
+        Optional<BookEntity> book = bookRepository.findById(id);
+        if (book.isPresent()) {
+            bookRepository.updatePersonIdToRelease(id);
+        }
+    }
+
+    @Transactional
+    public void assignBookToPerson(UUID bookId, UUID personId) {
+        Optional<BookEntity> book = bookRepository.findById(bookId);
+        if (book.isPresent()) {
+            bookRepository.assignBookToPersonById(bookId, personId);
+        }
     }
 
 }

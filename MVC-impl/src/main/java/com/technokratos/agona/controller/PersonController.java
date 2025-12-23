@@ -1,6 +1,7 @@
 package com.technokratos.agona.controller;
 
 import com.technokratos.agona.dto.PersonDto;
+import com.technokratos.agona.dto.PersonDtoWithBooks;
 import com.technokratos.agona.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,14 @@ public class PersonController {
     public String deletePerson(@PathVariable("id") UUID id) {
         personService.deletePerson(id);
         return "redirect:/people/all";
+    }
+
+    @GetMapping("/{id}")
+    public String personPage(@PathVariable("id") UUID id,
+                             Model model) {
+        PersonDtoWithBooks person = personService.getPersonWithBooksById(id);
+        model.addAttribute("person", person);
+        return "person.html";
     }
 
 }

@@ -5,36 +5,34 @@
     <title>All People</title>
 </head>
 <body>
-<h1>All People</h1>
+<h1>Все люди</h1>
 
 <div th:if="${peopleList != null and !peopleList.isEmpty()}">
-    <div th:each="person : ${peopleList}">
-        <h3>ID: <span th:text="${person.id}"></span></h3>
-        <p>Name: <strong th:text="${person.fio}"></strong></p>
-        <p>Birth Date: <span th:text="${person.birth}"></span></p>
-
-        <a th:href="@{/people/{id}/update(id=${person.id})}"
-           style="text-decoration: none; margin-right: 10px;">
-            <button type="button">Update</button>
-        </a>
-
-        <form th:action="@{/people/{id}/delete(id=${person.id})}" method="post" style="display: inline;">
-            <input type="hidden" name="_method" value="DELETE"/>
-            <button type="submit">
-                Delete
-            </button>
-        </form>
-
-        <hr>
-    </div>
+    <ul style="list-style-type: none; padding-left: 0;">
+        <li th:each="person : ${peopleList}" style="margin-bottom: 15px;">
+            <a th:href="@{/people/{id}(id=${person.id})}"
+               style="text-decoration: none; color: #333; display: block; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                <strong th:text="${person.fio}"></strong>,
+                <span th:text="${person.birth}"></span>
+            </a>
+        </li>
+    </ul>
 </div>
 
 <div th:if="${peopleList == null or peopleList.isEmpty()}">
-    <p>No people found.</p>
+    <p>Ни одни человек не найден.</p>
 </div>
-<a th:href="@{/people/create-person}">Add New Person</a>
 
-<a th:href="@{/}">Return to Home</a>
+<div style="margin-top: 20px;">
+    <a th:href="@{/people/create-person}">
+        <button type="button">+ Добавить нового человека</button>
+    </a>
+</div>
 
+<div style="margin-top: 10px;">
+    <a th:href="@{/}">
+        <button type="button">Вернуться домой</button>
+    </a>
+</div>
 </body>
 </html>

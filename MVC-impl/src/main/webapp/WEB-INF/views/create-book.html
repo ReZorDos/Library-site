@@ -5,21 +5,21 @@
     <title>Create New Book</title>
 </head>
 <body>
-<h1>Create New Book</h1>
+<h1>Создать новую книгу</h1>
 
 <form th:action="@{/books/create-book}" th:object="${book}" method="post">
     <div>
-        <label for="name">Book Name:</label>
+        <label for="name">Название:</label>
         <input type="text" id="name" th:field="*{name}" required>
     </div>
 
     <div>
-        <label for="author">Author:</label>
+        <label for="author">Автор:</label>
         <input type="text" id="author" th:field="*{author}" required>
     </div>
 
     <div>
-        <label for="year">Year:</label>
+        <label for="year">Год выпуска:</label>
         <input type="number" id="year" th:field="*{year}" required min="0" max="2100">
     </div>
 

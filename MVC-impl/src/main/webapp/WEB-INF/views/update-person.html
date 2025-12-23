@@ -5,7 +5,7 @@
   <title>Update Person</title>
 </head>
 <body>
-<h1>Update Person</h1>
+<h1>Обновить человека</h1>
 
 <form th:action="@{/people/{id}/update(id=${personDto.id})}"
       th:object="${personDto}"
@@ -13,22 +13,21 @@
 
   <input type="hidden" name="_method" value="patch">
 
-
   <div>
-    <label for="fio">Full Name (FIO):</label>
+    <label for="fio">ФИО:</label>
     <input type="text" id="fio" th:field="*{fio}" required>
   </div>
 
   <div>
-    <label for="birth">Birth Date:</label>
+    <label for="birth">Дата рождения:</label>
     <input type="date" id="birth" name="birth"
            th:value="${#temporals.format(personDto.birth, 'yyyy-MM-dd')}"
            required>
   </div>
 
   <div>
-    <button type="submit">Update Person</button>
-    <a th:href="@{/people/all}">Cancel</a>
+    <button type="submit">Обновить человека</button>
+    <a th:href="@{/people/{id}(id=${person.id})}">Отмена</a>
   </div>
 </form>
 
