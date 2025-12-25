@@ -5,22 +5,22 @@
     <title>Create New Person</title>
 </head>
 <body>
-<h1>Create New Person</h1>
+<h1>Создание человека</h1>
 
 <form th:action="@{/people/create-person}" th:object="${person}" method="post">
     <div>
-        <label for="fio">Full Name (FIO):</label>
+        <label for="fio">ФИО:</label>
         <input type="text" id="fio" th:field="*{fio}" required>
     </div>
 
     <div>
-        <label for="birth">Birth Date:</label>
+        <label for="birth">Дата рождения:</label>
         <input type="date" id="birth" th:field="*{birth}" required>
     </div>
 
     <div>
-        <button type="submit">Create Person</button>
-        <a href="/people/all">Cancel</a>
+        <button type="submit">Создать человека</button>
+        <a href="/people/all">Отмена</a>
     </div>
 </form>
 

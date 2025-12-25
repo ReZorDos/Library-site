@@ -5,37 +5,35 @@
   <title>All Books</title>
 </head>
 <body>
-<h1>All Books</h1>
+<h1>Все книги</h1>
 
 <div th:if="${books != null and !books.isEmpty()}">
-  <div th:each="book : ${books}">
-    <h3>ID: <span th:text="${book.id}"></span></h3>
-    <p>Name: <strong th:text="${book.name}"></strong></p>
-    <p>Author: <span th:text="${book.author}"></span></p>
-    <p>Year: <span th:text="${book.year}"></span></p>
-
-    <a th:href="@{/books/{id}/update(id=${book.id})}"
-       style="text-decoration: none; margin-right: 10px;">
-      <button type="button">Update</button>
-    </a>
-
-    <form th:action="@{/books/{id}/delete(id=${book.id})}" method="post" style="display: inline;">
-      <input type="hidden" name="_method" value="DELETE"/>
-      <button type="submit" onclick="return confirm('Удалить книгу?')">
-        Delete
-      </button>
-    </form>
-
-    <hr>
-  </div>
+  <ul style="list-style-type: none; padding-left: 0;">
+    <li th:each="book : ${books}" style="margin-bottom: 15px;">
+      <a th:href="@{/books/{id}(id=${book.id})}"
+         style="text-decoration: none; color: #333; display: block; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        <strong th:text="${book.name}"></strong>,
+        <span th:text="${book.author}"></span>,
+        <span th:text="${book.year}"></span>
+      </a>
+    </li>
+  </ul>
 </div>
 
 <div th:if="${books == null or books.isEmpty()}">
-  <p>No books found.</p>
+  <p>Ни одна книга не найдена.</p>
 </div>
 
-<a th:href="@{/books/create-book}">Add New Book</a>
+<div style="margin-top: 20px;">
+  <a th:href="@{/books/create-book}">
+    <button type="button">+ Добавить новую книгу</button>
+  </a>
+</div>
 
-<a th:href="@{/}">Return to Home</a>
+<div style="margin-top: 10px;">
+  <a th:href="@{/}">
+    <button type="button">Вернуться на главную</button>
+  </a>
+</div>
 </body>
 </html>
