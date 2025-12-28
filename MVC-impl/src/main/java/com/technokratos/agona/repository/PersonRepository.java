@@ -15,4 +15,6 @@ public interface PersonRepository extends JpaRepository<PersonEntity, UUID> {
     @Query("select p from PersonEntity p left join fetch p.books where p.id = :id")
     Optional<PersonEntity> findPersonWithBooks(@Param("id") UUID id);
 
+    Optional<PersonEntity> findOneByFio(String fio);
+
 }

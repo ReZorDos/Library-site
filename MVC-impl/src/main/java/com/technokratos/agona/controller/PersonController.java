@@ -3,9 +3,12 @@ package com.technokratos.agona.controller;
 import com.technokratos.agona.dto.PersonDto;
 import com.technokratos.agona.dto.PersonDtoWithBooks;
 import com.technokratos.agona.service.PersonService;
+import com.technokratos.agona.util.PersonValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonValidator personValidator;
 
     @GetMapping("/all")
     public String allPeople(Model model) {
@@ -31,7 +35,13 @@ public class PersonController {
     }
 
     @PostMapping("/create-person")
-    public String createPerson(@ModelAttribute("person") PersonDto personDto) {
+    public String createPerson(@ModelAttribute("person") @Valid PersonDto personDto,
+                               BindingResult bindingResult) {
+        personValidator.validate(personDto, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "create-person.html";
+        }
         personService.createPerson(personDto);
         return "redirect:/people/all";
     }
@@ -45,7 +55,13 @@ public class PersonController {
 
     @PatchMapping("/{id}/update")
     public String updatePerson(@PathVariable("id") UUID id,
-                               @ModelAttribute("personDto") PersonDto personDto) {
+                               @ModelAttribute("personDto") @Valid PersonDto personDto,
+                               BindingResult bindingResult) {
+        personValidator.validate(personDto, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "update-person.html";
+        }
         personService.updatePerson(personDto, id);
         return "redirect:/people/all";
     }

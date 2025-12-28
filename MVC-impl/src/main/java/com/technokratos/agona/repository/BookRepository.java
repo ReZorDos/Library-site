@@ -25,4 +25,8 @@ public interface BookRepository extends JpaRepository<BookEntity, UUID> {
     void assignBookToPersonById(@Param("idBook") UUID idBook,
                                 @Param("idPerson") UUID idPerson);
 
+    @Modifying
+    @Query("update BookEntity b set b.person = null where b.person.id = :personId")
+    void releaseBooksByPersonId(@Param("personId") UUID personId);
+
 }

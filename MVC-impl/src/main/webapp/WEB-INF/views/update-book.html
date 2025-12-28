@@ -12,20 +12,33 @@
       method="post">
 
     <input type="hidden" name="_method" value="patch">
+    <input type="hidden" th:field="*{id}">
 
     <div>
         <label for="name">Название:</label>
-        <input type="text" id="name" th:field="*{name}" required>
+        <input type="text" id="name" th:field="*{name}">
+        <div th:if="${#fields.hasErrors('name')}">
+            <span th:each="error : ${#fields.errors('name')}" th:text="${error}"
+                  style="color: #dc3545; font-size: 0.875em;"></span>
+        </div>
     </div>
 
     <div>
         <label for="author">Автор:</label>
-        <input type="text" id="author" th:field="*{author}" required>
+        <input type="text" id="author" th:field="*{author}">
+        <div th:if="${#fields.hasErrors('author')}">
+            <span th:each="error : ${#fields.errors('author')}" th:text="${error}"
+                  style="color: #dc3545; font-size: 0.875em;"></span>
+        </div>
     </div>
 
     <div>
         <label for="year">Год:</label>
-        <input type="number" id="year" th:field="*{year}" required min="0" max="2100">
+        <input type="number" id="year" th:field="*{year}" min="0" max="2100">
+        <div th:if="${#fields.hasErrors('year')}">
+            <span th:each="error : ${#fields.errors('year')}" th:text="${error}"
+                  style="color: #dc3545; font-size: 0.875em;"></span>
+        </div>
     </div>
 
     <div>

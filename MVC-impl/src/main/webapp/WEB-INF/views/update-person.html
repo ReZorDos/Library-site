@@ -7,27 +7,33 @@
 <body>
 <h1>Обновить человека</h1>
 
-<form th:action="@{/people/{id}/update(id=${personDto.id})}"
-      th:object="${personDto}"
-      method="post">
+<form th:action="@{/people/{id}/update(id=${personDto.id})}" th:object="${personDto}" method="post">
 
   <input type="hidden" name="_method" value="patch">
+  <input type="hidden" th:field="*{id}">
 
   <div>
     <label for="fio">ФИО:</label>
-    <input type="text" id="fio" th:field="*{fio}" required>
+    <input type="text" id="fio" th:field="*{fio}">
+    <div th:if="${#fields.hasErrors('fio')}">
+      <span th:each="error : ${#fields.errors('fio')}" th:text="${error}"
+            style="color: #dc3545; font-size: 0.875em;"></span>
+    </div>
   </div>
 
   <div>
     <label for="birth">Дата рождения:</label>
     <input type="date" id="birth" name="birth"
-           th:value="${#temporals.format(personDto.birth, 'yyyy-MM-dd')}"
-           required>
+           th:value="${personDto.birth != null} ? ${#temporals.format(personDto.birth, 'yyyy-MM-dd')} : ''">
+    <div th:if="${#fields.hasErrors('birth')}">
+      <span th:each="error : ${#fields.errors('birth')}" th:text="${error}"
+            style="color: #dc3545; font-size: 0.875em;"></span>
+    </div>
   </div>
 
   <div>
     <button type="submit">Обновить человека</button>
-    <a th:href="@{/people/{id}(id=${person.id})}">Отмена</a>
+    <a th:href="@{/people/{id}(id=${personDto.id})}">Отмена</a>
   </div>
 </form>
 

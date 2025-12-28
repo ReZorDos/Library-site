@@ -3,9 +3,12 @@ package com.technokratos.agona.service;
 import com.technokratos.agona.dto.PersonDto;
 import com.technokratos.agona.dto.PersonDtoWithBooks;
 import com.technokratos.agona.mapper.PersonMapper;
+import com.technokratos.agona.model.BookEntity;
 import com.technokratos.agona.model.PersonEntity;
+import com.technokratos.agona.repository.BookRepository;
 import com.technokratos.agona.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,7 @@ import java.util.UUID;
 public class PersonService {
 
     private final PersonRepository personRepository;
+    private final BookService bookService;
     private final PersonMapper personMapper;
 
     public PersonDto getPersonById(UUID id) {
@@ -59,7 +63,10 @@ public class PersonService {
     @Transactional
     public void deletePerson(UUID id) {
         Optional<PersonEntity> entity = personRepository.findById(id);
-        entity.ifPresent(personRepository::delete);
+        if (entity.isPresent()) {
+            bookService.releaseAllBooksByPersonId(id);
+            personRepository.delete(entity.get());
+        }
     }
 
 }
