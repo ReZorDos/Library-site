@@ -5,9 +5,11 @@ import com.technokratos.agona.dto.BookDtoWithPeople;
 import com.technokratos.agona.dto.PersonDto;
 import com.technokratos.agona.service.BookService;
 import com.technokratos.agona.service.PersonService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,7 +37,11 @@ public class BookController {
     }
 
     @PostMapping("/create-book")
-    public String createBook(@ModelAttribute("book") BookDto bookDto) {
+    public String createBook(@ModelAttribute("book") @Valid BookDto bookDto,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "create-book.html";
+        }
         bookService.createBook(bookDto);
         return "redirect:/books/all";
     }
@@ -49,7 +55,11 @@ public class BookController {
 
     @PatchMapping("/{id}/update")
     public String updateBook(@PathVariable("id") UUID id,
-                             @ModelAttribute BookDto bookDto) {
+                             @ModelAttribute("book") @Valid BookDto bookDto,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "update-book.html";
+        }
         bookService.updateBook(bookDto, id);
         return "redirect:/books/all";
     }

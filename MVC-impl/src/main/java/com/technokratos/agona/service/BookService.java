@@ -79,4 +79,8 @@ public class BookService {
         }
     }
 
+    public void releaseAllBooksByPersonId(UUID personId) {
+        bookRepository.releaseBooksByPersonId(personId);
+    }
+
 }
