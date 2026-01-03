@@ -18,6 +18,37 @@
       </a>
     </li>
   </ul>
+
+  <div th:if="${totalPages > 1}" style="text-align: center; margin: 20px 0;">
+
+    <a th:href="@{/books/all(offset=${currentPage - 1}, limit=${limit})}"
+       th:if="${currentPage > 0}">
+      [‹ Предыдущая]
+    </a>
+    <span th:unless="${currentPage > 0}">[‹ Предыдущая]</span>
+
+    <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+      <span th:if="${pageNum >= currentPage - 2 and pageNum <= currentPage + 2}">
+        <a th:href="@{/books/all(offset=${pageNum}, limit=${limit})}"
+           th:if="${pageNum != currentPage}"
+           style="margin: 0 5px;">
+          [[${pageNum + 1}]]
+        </a>
+        <strong th:if="${pageNum == currentPage}" style="margin: 0 5px;">
+          [[${pageNum + 1}]]
+        </strong>
+      </span>
+    </span>
+
+    <a th:href="@{/books/all(offset=${currentPage + 1}, limit=${limit})}"
+       th:if="${currentPage < totalPages - 1}">
+      [Следующая ›]
+    </a>
+    <span th:unless="${currentPage < totalPages - 1}">[Следующая ›]</span>
+
+    <br>
+    <small>Страница [[${currentPage + 1}]] из [[${totalPages}]]</small>
+  </div>
 </div>
 
 <div th:if="${books == null or books.isEmpty()}">

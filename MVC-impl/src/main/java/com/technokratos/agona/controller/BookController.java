@@ -25,9 +25,17 @@ public class BookController {
     private final PersonService personService;
 
     @GetMapping("/all")
-    public String allBooks(Model model) {
-        List<BookDto> books = bookService.getAllBooks();
+    public String allBooks(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                           @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                           Model model) {
+        List<BookDto> books = bookService.getAllBooks(offset, limit);
+        int totalPages = bookService.totalPagesOfBooks(limit);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("limit", limit);
+        model.addAttribute("currentPage", offset);
         model.addAttribute("books", books);
+
         return "all-books.html";
     }
 
