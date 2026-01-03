@@ -7,6 +7,7 @@ import com.technokratos.agona.service.BookService;
 import com.technokratos.agona.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,13 +28,15 @@ public class BookController {
     @GetMapping("/all")
     public String allBooks(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                            @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                           @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear,
                            Model model) {
-        List<BookDto> books = bookService.getAllBooks(offset, limit);
+        List<BookDto> books = bookService.getAllBooks(offset, limit, sortByYear);
         int totalPages = bookService.totalPagesOfBooks(limit);
 
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("limit", limit);
         model.addAttribute("currentPage", offset);
+        model.addAttribute("sortByYear", sortByYear);
         model.addAttribute("books", books);
 
         return "all-books.html";

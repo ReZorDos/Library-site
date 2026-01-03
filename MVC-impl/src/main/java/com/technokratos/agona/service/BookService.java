@@ -38,7 +38,11 @@ public class BookService {
         return null;
     }
 
-    public List<BookDto> getAllBooks(Integer offset, Integer limit) {
+    public List<BookDto> getAllBooks(Integer offset, Integer limit, boolean sortByYear) {
+        if (sortByYear) {
+            List<BookEntity> books = bookRepository.findAllByOrderByYearAsc(PageRequest.of(offset, limit));
+            return bookMapper.toDto(books);
+        }
         List<BookEntity> books = bookRepository.findAll(PageRequest.of(offset, limit)).getContent();
         return bookMapper.toDto(books);
     }

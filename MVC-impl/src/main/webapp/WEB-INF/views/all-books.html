@@ -7,6 +7,20 @@
 <body>
 <h1>Все книги</h1>
 
+<div style="margin-bottom: 20px;">
+  <form th:action="@{/books/all}" method="get" style="display: inline;">
+    <input type="hidden" name="offset" th:value="${currentPage}">
+    <input type="hidden" name="limit" th:value="${limit}">
+    <input type="hidden" name="sort_by_year" th:value="${!sortByYear}">
+    <button type="submit" th:text="${sortByYear ? 'Сортировать по умолчанию' : 'Сортировать по году выпуска'}">
+      Сортировать по году выпуска
+    </button>
+  </form>
+  <span th:if="${sortByYear}" style="margin-left: 10px; color: #666;">
+    (Сейчас сортировка по году выпуска включена)
+  </span>
+</div>
+
 <div th:if="${books != null and !books.isEmpty()}">
   <ul style="list-style-type: none; padding-left: 0;">
     <li th:each="book : ${books}" style="margin-bottom: 15px;">
@@ -21,7 +35,7 @@
 
   <div th:if="${totalPages > 1}" style="text-align: center; margin: 20px 0;">
 
-    <a th:href="@{/books/all(offset=${currentPage - 1}, limit=${limit})}"
+    <a th:href="@{/books/all(offset=${currentPage - 1}, limit=${limit}, sort_by_year=${sortByYear})}"
        th:if="${currentPage > 0}">
       [‹ Предыдущая]
     </a>
@@ -29,7 +43,7 @@
 
     <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
       <span th:if="${pageNum >= currentPage - 2 and pageNum <= currentPage + 2}">
-        <a th:href="@{/books/all(offset=${pageNum}, limit=${limit})}"
+        <a th:href="@{/books/all(offset=${pageNum}, limit=${limit}, sort_by_year=${sortByYear})}"
            th:if="${pageNum != currentPage}"
            style="margin: 0 5px;">
           [[${pageNum + 1}]]
@@ -40,7 +54,7 @@
       </span>
     </span>
 
-    <a th:href="@{/books/all(offset=${currentPage + 1}, limit=${limit})}"
+    <a th:href="@{/books/all(offset=${currentPage + 1}, limit=${limit}, sort_by_year=${sortByYear})}"
        th:if="${currentPage < totalPages - 1}">
       [Следующая ›]
     </a>
