@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск книг</title>
+</head>
+<body>
+<h1>Поиск книг</h1>
+
+<form th:action="@{/books/search}" method="get">
+    <input type="text" name="name" placeholder="Введите название книги">
+    <button type="submit">Найти</button>
+</form>
+
+<div th:if="${books != null}">
+    <div th:if="${!books.isEmpty()}">
+        <p>Найдено книг: [[${books.size()}]]</p>
+
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li th:each="book : ${books}" style="margin-bottom: 15px;">
+                <a th:href="@{/books/{id}(id=${book.id})}"
+                   style="text-decoration: none; color: #333; display: block; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <strong th:text="${book.name}"></strong>,
+                    <span th:text="${book.author}"></span>,
+                    <span th:text="${book.year}"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${books.isEmpty()}">
+        <p>Книги не найдены.</p>
+    </div>
+</div>
+
+<div style="margin-top: 30px;">
+    <a th:href="@{/books/all}">
+        <button type="button">Посмотреть все книги</button>
+    </a>
+
+    <a th:href="@{/}" style="margin-left: 10px;">
+        <button type="button">Вернуться на главную</button>
+    </a>
+</div>
+</body>
+</html>

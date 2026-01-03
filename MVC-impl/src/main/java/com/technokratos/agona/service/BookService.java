@@ -6,6 +6,8 @@ import com.technokratos.agona.mapper.BookMapper;
 import com.technokratos.agona.model.BookEntity;
 import com.technokratos.agona.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +38,12 @@ public class BookService {
         return null;
     }
 
-    public List<BookDto> getAllBooks() {
-        List<BookEntity> books = bookRepository.findAll();
+    public List<BookDto> getAllBooks(Integer offset, Integer limit, boolean sortByYear) {
+        if (sortByYear) {
+            List<BookEntity> books = bookRepository.findAllByOrderByYearAsc(PageRequest.of(offset, limit));
+            return bookMapper.toDto(books);
+        }
+        List<BookEntity> books = bookRepository.findAll(PageRequest.of(offset, limit)).getContent();
         return bookMapper.toDto(books);
     }
 
@@ -81,6 +87,16 @@ public class BookService {
 
     public void releaseAllBooksByPersonId(UUID personId) {
         bookRepository.releaseBooksByPersonId(personId);
+    }
+
+    public int totalPagesOfBooks(Integer limit) {
+        long totalBooks = bookRepository.count();
+        return (int) Math.ceil((double) totalBooks / limit);
+    }
+
+    public List<BookDto> searchBooksByName(String name) {
+        List<BookEntity> books = bookRepository.findAllByNameStartsWith(name);
+        return bookMapper.toDto(books);
     }
 
 }

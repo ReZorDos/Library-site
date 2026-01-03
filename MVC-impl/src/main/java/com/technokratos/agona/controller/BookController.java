@@ -25,9 +25,19 @@ public class BookController {
     private final PersonService personService;
 
     @GetMapping("/all")
-    public String allBooks(Model model) {
-        List<BookDto> books = bookService.getAllBooks();
+    public String allBooks(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                           @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                           @RequestParam(value = "sort_by_year", defaultValue = "false") boolean sortByYear,
+                           Model model) {
+        List<BookDto> books = bookService.getAllBooks(offset, limit, sortByYear);
+        int totalPages = bookService.totalPagesOfBooks(limit);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("limit", limit);
+        model.addAttribute("currentPage", offset);
+        model.addAttribute("sortByYear", sortByYear);
         model.addAttribute("books", books);
+
         return "all-books.html";
     }
 
@@ -95,6 +105,14 @@ public class BookController {
         bookService.assignBookToPerson(idBook, idPerson);
         redirectAttributes.addAttribute("id", idBook);
         return "redirect:/books/{id}";
+    }
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "name", required = false) String name,
+                             Model model) {
+        List<BookDto> books = bookService.searchBooksByName(name);
+        model.addAttribute("books", books);
+        return "search-book.html";
     }
 
 }
