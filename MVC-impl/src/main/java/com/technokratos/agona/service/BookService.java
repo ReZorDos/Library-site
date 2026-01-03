@@ -94,4 +94,9 @@ public class BookService {
         return (int) Math.ceil((double) totalBooks / limit);
     }
 
+    public List<BookDto> searchBooksByName(String name) {
+        List<BookEntity> books = bookRepository.findAllByNameStartsWith(name);
+        return bookMapper.toDto(books);
+    }
+
 }

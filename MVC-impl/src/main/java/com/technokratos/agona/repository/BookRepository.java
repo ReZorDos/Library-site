@@ -34,4 +34,6 @@ public interface BookRepository extends JpaRepository<BookEntity, UUID> {
 
     List<BookEntity> findAllByOrderByYearAsc(Pageable pageable);
 
+    List<BookEntity> findAllByNameStartsWith(String name);
+
 }

@@ -7,7 +7,6 @@ import com.technokratos.agona.service.BookService;
 import com.technokratos.agona.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -106,6 +105,14 @@ public class BookController {
         bookService.assignBookToPerson(idBook, idPerson);
         redirectAttributes.addAttribute("id", idBook);
         return "redirect:/books/{id}";
+    }
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "name", required = false) String name,
+                             Model model) {
+        List<BookDto> books = bookService.searchBooksByName(name);
+        model.addAttribute("books", books);
+        return "search-book.html";
     }
 
 }
